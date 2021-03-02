@@ -1,7 +1,3 @@
-const express = require('express');
-const app = express ();
-
-
 let noteText;
 let saveNoteBtn;
 let newNoteBtn;
@@ -20,8 +16,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-require("./routes/api.routes")(app);
-require("./routes/html.routes")(app);
+require("../../../routes/api.routes")(app);
+require("../../../routes/html.routes")(app);
 
 // Show an element
 const show = (elem) => {
@@ -189,11 +185,3 @@ if (window.location.pathname === '/notes') {
 }
 
 getAndRenderNotes();
-
-
-
-
-
-const PORT = process.env.PORT || 8080;
-
-app.listen(PORT, () => console.log(`server started on port: ${PORT}`));
