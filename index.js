@@ -1,15 +1,27 @@
+const express = require('express');
+const app = express ();
+
+
 let noteText;
 let saveNoteBtn;
 let newNoteBtn;
 let noteList;
 
-if (window.location.pathname === 'public/notes') {
+if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
   noteText = document.querySelector('.note-textarea');
   saveNoteBtn = document.querySelector('.save-note');
   newNoteBtn = document.querySelector('.new-note');
   noteList = document.querySelectorAll('.list-container .list-group');
 }
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+require("./routes/api.routes")(app);
+require("./routes/html.routes")(app);
 
 // Show an element
 const show = (elem) => {
@@ -25,7 +37,7 @@ const hide = (elem) => {
 let activeNote = {};
 
 const getNotes = () =>
-  fetch('/api/public/notes', {
+  fetch('/api/notes', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -33,7 +45,7 @@ const getNotes = () =>
   });
 
 const saveNote = (note) =>
-  fetch('/api/public/notes', {
+  fetch('/api/notes', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -42,7 +54,7 @@ const saveNote = (note) =>
   });
 
 const deleteNote = (id) =>
-  fetch(`/api/public/notes/${id}`, {
+  fetch(`/api/notes/${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
@@ -116,7 +128,7 @@ const handleRenderSaveBtn = () => {
 // Render the list of note titles
 const renderNoteList = async (notes) => {
   let jsonNotes = await notes.json();
-  if (window.location.pathname === 'public/notes') {
+  if (window.location.pathname === '/notes') {
     noteList.forEach((el) => (el.innerHTML = ''));
   }
 
@@ -169,7 +181,7 @@ const renderNoteList = async (notes) => {
 // Gets notes from the db and renders them to the sidebar
 const getAndRenderNotes = () => getNotes().then(renderNoteList);
 
-if (window.location.pathname === 'public/notes') {
+if (window.location.pathname === '/notes') {
   saveNoteBtn.addEventListener('click', handleNoteSave);
   newNoteBtn.addEventListener('click', handleNewNoteView);
   noteTitle.addEventListener('keyup', handleRenderSaveBtn);
@@ -177,3 +189,11 @@ if (window.location.pathname === 'public/notes') {
 }
 
 getAndRenderNotes();
+
+
+
+
+
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, () => console.log(`server started on port: ${PORT}`));
