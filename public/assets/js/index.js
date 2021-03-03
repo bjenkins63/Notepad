@@ -1,3 +1,11 @@
+const db = ('./db/db.json', {safe: true});
+const express = require('express');
+const app = express();
+const path = require('path');
+const routes = require('./routes/notes');
+const notes = require('./routes/notes')
+
+let noteTitle;
 let noteText;
 let saveNoteBtn;
 let newNoteBtn;
@@ -10,14 +18,6 @@ if (window.location.pathname === '/notes') {
   newNoteBtn = document.querySelector('.new-note');
   noteList = document.querySelectorAll('.list-container .list-group');
 }
-
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-require("../../../routes/api.routes")(app);
-require("../../../routes/html.routes")(app);
 
 // Show an element
 const show = (elem) => {
@@ -57,8 +57,16 @@ const deleteNote = (id) =>
     },
   });
 
+const editNote = (note) =>
+fetch(`/api/notes/${note}`, {
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
 const renderActiveNote = () => {
-  hide(saveNoteBtn);
+  show(saveNoteBtn);
 
   if (activeNote.id) {
     noteTitle.setAttribute('readonly', true);
@@ -76,6 +84,7 @@ const handleNoteSave = () => {
     title: noteTitle.value,
     text: noteText.value,
   };
+
   saveNote(newNote).then(() => {
     getAndRenderNotes();
     renderActiveNote();
@@ -86,9 +95,29 @@ const handleNoteSave = () => {
 const handleNoteDelete = (e) => {
   // prevents the click listener for the list from being called when the button inside of it is clicked
   e.stopPropagation();
+  handleNoteView();
 
   const note = e.target;
   const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
+
+  if (activeNote.id === noteId) {
+    activeNote = {
+      title: noteTitle.value.trim(),
+      text: noteText.value.trim(),
+    };
+  }
+
+  editNote(note).then(() => {
+    saveNote(activeNote);
+    getAndRenderNotes();
+    renderActiveNote();
+  });
+};
+
+
+  const note = e.target;
+  const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
+  console.log("Note Deleted.");
 
   if (activeNote.id === noteId) {
     activeNote = {};
@@ -108,7 +137,7 @@ const handleNoteView = (e) => {
 };
 
 // Sets the activeNote to and empty object and allows the user to enter a new note
-const handleNewNoteView = (e) => {
+const handleNewNoteView = () => {
   activeNote = {};
   renderActiveNote();
 };
@@ -124,6 +153,7 @@ const handleRenderSaveBtn = () => {
 // Render the list of note titles
 const renderNoteList = async (notes) => {
   let jsonNotes = await notes.json();
+
   if (window.location.pathname === '/notes') {
     noteList.forEach((el) => (el.innerHTML = ''));
   }
@@ -143,6 +173,7 @@ const renderNoteList = async (notes) => {
 
     if (delBtn) {
       const delBtnEl = document.createElement('i');
+
       delBtnEl.classList.add(
         'fas',
         'fa-trash-alt',
@@ -150,6 +181,7 @@ const renderNoteList = async (notes) => {
         'text-danger',
         'delete-note'
       );
+      
       delBtnEl.addEventListener('click', handleNoteDelete);
 
       liEl.append(delBtnEl);

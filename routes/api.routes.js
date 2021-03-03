@@ -1,6 +1,8 @@
 const fs = require("fs");
+const db = ('./db/db.json', {safe: true});
 const express = require('express');
 const app = express();
+const path = require('path');
 
 const editNote = (updatedNotesArray) => {
   fs.writeFile("./db/db.json", JSON.stringify(updatedNotesArray), (err) => {
@@ -23,14 +25,13 @@ module.exports = (app) => {
     fs.readFile("./db/db.json", "utf8", (err, data) => {
       if (err) throw err;
       const notesArr = JSON.parse(data);
-      newNote.id = generateUniqueId({ length: 10 });
       notesArr.push(newNote);
 
       editNote(notesArr);
       console.log(
         `New Note Added! Title: ${JSON.stringify(
           newNote.title
-        )}, Text: ${JSON.stringify(newNote.text)}, ID: ${newNote.id}`
+        )}, Text: ${JSON.stringify(newNote.text)}`
       );
 
       res.send(notesArr);
@@ -49,7 +50,7 @@ module.exports = (app) => {
         }
       }
       editNote(notesArr);
-      console.log(`Note Deleted! Note ID: ${deleteId}`);
+      console.log(`Note Deleted!`);
       res.send(notesArr);
     });
   });
