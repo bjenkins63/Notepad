@@ -1,6 +1,3 @@
-const db = ('./db/db.json', {safe: true});
-
-
 let noteTitle;
 let noteText;
 let saveNoteBtn;
@@ -53,8 +50,8 @@ const deleteNote = (id) =>
     },
   });
 
-const editNote = (note) =>
-fetch(`/api/notes/${note}`, {
+const editNote = (id) =>
+fetch(`/api/notes/${id}`, {
   method: 'PUT',
   headers: {
     'Content-Type': 'application/json',
@@ -62,7 +59,7 @@ fetch(`/api/notes/${note}`, {
 });
 
 const renderActiveNote = () => {
-  show(saveNoteBtn);
+  hide(saveNoteBtn);
 
   if (activeNote.id) {
     noteTitle.setAttribute('readonly', true);
@@ -81,17 +78,22 @@ const handleNoteSave = () => {
     text: noteText.value,
   };
 
+  console.log(
+    `New Note Added! Title: ${JSON.stringify(
+      newNote.title)}, 
+  )}, Text: ${JSON.stringify(newNote.text)}`
+  );
+
   saveNote(newNote).then(() => {
     getAndRenderNotes();
     renderActiveNote();
   });
 };
 
-// Delete the clicked note
-const handleNoteDelete = (event) => {
-  // prevents the click listener for the list from being called when the button inside of it is clicked
+const handleNoteEdit = (event) => {
   event.stopPropagation();
   handleNoteView();
+}
 
   const note = event.target;
   const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
@@ -108,15 +110,15 @@ const handleNoteDelete = (event) => {
     getAndRenderNotes();
     renderActiveNote();
   });
-};
+;
 
 const handleNoteDelete = (event) => {
   event.stopPropagation();
 }
 
-  const note = event.target;
-  const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
-  console.log("Note Deleted.");
+  //const note = event.target;
+ // const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
+ // console.log("Note Deleted.");
 
   if (activeNote.id === noteId) {
     activeNote = {};
