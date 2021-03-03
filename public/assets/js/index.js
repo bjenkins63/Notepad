@@ -1,9 +1,9 @@
 const db = ('./db/db.json', {safe: true});
-const express = require('express');
-const app = express();
-const path = require('path');
-const routes = require('./routes/notes');
-const notes = require('./routes/notes')
+//const express = require('express');
+//const app = express();
+//const path = require('path');
+//const routes = require('./routes/notes');
+//const notes = require('./routes/notes')
 
 let noteTitle;
 let noteText;
@@ -92,12 +92,12 @@ const handleNoteSave = () => {
 };
 
 // Delete the clicked note
-const handleNoteDelete = (e) => {
+const handleNoteDelete = (event) => {
   // prevents the click listener for the list from being called when the button inside of it is clicked
-  e.stopPropagation();
+  event.stopPropagation();
   handleNoteView();
 
-  const note = e.target;
+  const note = event.target;
   const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
 
   if (activeNote.id === noteId) {
@@ -127,11 +127,11 @@ const handleNoteDelete = (e) => {
     getAndRenderNotes();
     renderActiveNote();
   });
-};
+
 
 // Sets the activeNote and displays it
-const handleNoteView = (e) => {
-  e.preventDefault();
+const handleNoteView = (event) => {
+  event.preventDefault();
   activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
   renderActiveNote();
 };
