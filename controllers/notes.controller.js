@@ -1,51 +1,52 @@
-const todos = require("../db/db");
+const notes = require("../db/db");
 
-class Todo {
+class Note {
 
     // baseUrl = "https://jsonplaceholder.typicode.com/todos";
     // update
 
     update({ id, ...payload }) {
         let index;
-        let update = todos.find((todo, i) => {
+        let update = notes.find((note, i) => {
             index = i;
-            todo.id === id
+            note.id === id
         });
         update = {
             id: id,
             ...payload
         };
-        return todos;
+        notes[index] = update;
+        return notes;
     }
 
     // create
 
     create(payload) {
-        todos.push(payload);
-        return todos;
+        notes.push(payload);
+        return notes;
     }
 
     // delete
 
     remove(id) {
         let index;
-        const todo = todos.find((t, i) => {
+        const notes = notes.find((n, i) => {
             index = i;
-            t.id === id
+            n.id === id
         });
-        todos.splice(index, 1);
+        notes.splice(index, 1);
     }
 
     // read
 
     read(id) {
-        return todos.find((t) => t.id === id);
+        return notes.find((n) => n.id === id);
     }
 
     list() {
-        return todos;
+        return notes;
     }
 
 }
 
-module.exports = new Todo();
+module.exports = new Note();

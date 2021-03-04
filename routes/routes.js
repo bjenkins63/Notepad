@@ -1,13 +1,12 @@
 const router = require("express").Router();
-// const todoController = require("./controllers/todos.controller");
-const todoController = require("./controllers/controller.js");
+const notesController = require("./controllers/notes.controller.js");
 
 
 
 router.get("/", async (req, res) => {
     try {
 
-        const todos = await todoController.list();
+        const todos = await notesController.list();
         res.send(todos);
 
     } catch (err) {
@@ -18,7 +17,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const todo = await todoController.read(id);
+        const todo = await notesController.read(id);
         res.send(todo);
 
     } catch (err) {
@@ -30,7 +29,7 @@ router.put("/:id", async (req, res) => {
     try {
         const update = req.body;
         const { id } = req.params;
-        const todo = await todoController.update({ id, ...update });
+        const todo = await notesController.update({ id, ...update });
         res.send(todo);
 
     } catch (err) {
@@ -44,7 +43,7 @@ router.post("/", async (req, res) => {
     // console.log(req.body);
     try {
         const create = req.body;
-        const todo = await todoController.create(create);
+        const todo = await notesController.create(create);
         res.send(todo);
 
     } catch (err) {
@@ -55,7 +54,7 @@ router.post("/", async (req, res) => {
 router.delete("/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const todos = await todoController.remove(id);
+        const todos = await notesController.remove(id);
         res.send(todos);
 
     } catch (err) {

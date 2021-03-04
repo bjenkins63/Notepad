@@ -61,7 +61,7 @@ module.exports = (app) => {
 
       let notesArr = JSON.parse(data);
 
-      let selectedNote = notesArr.find((note) => note.id === editId);
+      let selectedNote = notesArr.find((note) => note.id === noteId);
 
       if (selectedNote) {
         let updatedNote = {
