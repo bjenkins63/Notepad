@@ -1,12 +1,12 @@
 let noteTitle;
-let noteText;
+let noteBody;
 let saveNoteBtn;
 let newNoteBtn;
 let noteList;
 
-if (window.location.pathname === '/notes') {
+if (window.location.pathname === '/') {
   noteTitle = document.querySelector('.note-title');
-  noteText = document.querySelector('.note-textarea');
+  noteBody = document.querySelector('.note-body');
   saveNoteBtn = document.querySelector('.save-note');
   newNoteBtn = document.querySelector('.new-note');
   noteList = document.querySelectorAll('.list-container .list-group');
@@ -62,26 +62,26 @@ const renderActiveNote = () => {
   hide(saveNoteBtn);
 
   if (activeNote.id) {
-    noteTitle.setAttribute('readonly', true);
-    noteText.setAttribute('readonly', true);
+    // noteTitle.setAttribute('readonly', true);
+    // noteText.setAttribute('readonly', true);
     noteTitle.value = activeNote.title;
-    noteText.value = activeNote.text;
+    noteBody.value = activeNote.body;
   } else {
     noteTitle.value = '';
-    noteText.value = '';
+    noteBody.value = '';
   }
 };
 
 const handleNoteSave = () => {
   const newNote = {
     title: noteTitle.value,
-    text: noteText.value,
+    body: noteBody.value,
   };
 
   console.log(
     `New Note Added! Title: ${JSON.stringify(
       newNote.title)}, 
-  )}, Text: ${JSON.stringify(newNote.text)}`
+  )}, Body: ${JSON.stringify(newNote.body)}`
   );
 
   saveNote(newNote).then(() => {
@@ -101,7 +101,7 @@ const handleNoteEdit = (event) => {
   if (activeNote.id === noteId) {
     activeNote = {
       title: noteTitle.value.trim(),
-      text: noteText.value.trim(),
+      text: noteBody.value.trim(),
     };
   }
 
@@ -116,9 +116,9 @@ const handleNoteDelete = (event) => {
   event.stopPropagation();
 }
 
-  //const note = event.target;
- // const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
- // console.log("Note Deleted.");
+const note = event.target;
+const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
+console.log("Note Deleted.");
 
   if (activeNote.id === noteId) {
     activeNote = {};
@@ -144,11 +144,11 @@ const handleNewNoteView = () => {
 };
 
 const handleRenderSaveBtn = () => {
-  if (!noteTitle.value.trim() || !noteText.value.trim()) {
+  if (!noteTitle.value.trim() || !noteBody.value.trim()) {
     hide(saveNoteBtn);
   } else {
     show(saveNoteBtn);
-  }
+  }d
 };
 
 // Render the list of note titles
@@ -214,7 +214,7 @@ if (window.location.pathname === '/notes') {
   saveNoteBtn.addEventListener('click', handleNoteSave);
   newNoteBtn.addEventListener('click', handleNewNoteView);
   noteTitle.addEventListener('keyup', handleRenderSaveBtn);
-  noteText.addEventListener('keyup', handleRenderSaveBtn);
+  noteBody.addEventListener('keyup', handleRenderSaveBtn);
 }
 
 getAndRenderNotes();

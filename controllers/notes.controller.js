@@ -2,9 +2,6 @@ const notes = require("../db/db");
 
 class Note {
 
-    // baseUrl = "https://jsonplaceholder.typicode.com/todos";
-    // update
-
     update({ id, ...payload }) {
         let index;
         let update = notes.find((note, i) => {
