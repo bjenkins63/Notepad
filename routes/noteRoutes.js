@@ -53,7 +53,7 @@ module.exports = (app) => {
   });
 
   // PUT REQUEST
-  app.put("/api/notes/:id", (req, res) => {
+  app.put("/api/public/notes/:id", (req, res) => {
     const editId = req.params.id;
 
     fs.readFile("./db/db.json", "utf8", (err, data) => {

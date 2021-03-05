@@ -4,7 +4,7 @@ let saveNoteBtn;
 let newNoteBtn;
 let noteList;
 
-if (window.location.pathname === '/') {
+if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
   noteBody = document.querySelector('.note-body');
   saveNoteBtn = document.querySelector('.save-note');
@@ -12,12 +12,10 @@ if (window.location.pathname === '/') {
   noteList = document.querySelectorAll('.list-container .list-group');
 }
 
-// Show an element
 const show = (elem) => {
   elem.style.display = 'inline';
 };
 
-// Hide an element
 const hide = (elem) => {
   elem.style.display = 'none';
 };
@@ -62,8 +60,8 @@ const renderActiveNote = () => {
   hide(saveNoteBtn);
 
   if (activeNote.id) {
-    // noteTitle.setAttribute('readonly', true);
-    // noteText.setAttribute('readonly', true);
+    noteTitle.setAttribute('readonly', true);
+    noteText.setAttribute('readonly', true);
     noteTitle.value = activeNote.title;
     noteBody.value = activeNote.body;
   } else {
@@ -93,10 +91,10 @@ const handleNoteSave = () => {
 const handleNoteEdit = (event) => {
   event.stopPropagation();
   handleNoteView();
-}
 
-  const note = event.target;
-  const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
+
+const note = event.target;
+const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
 
   if (activeNote.id === noteId) {
     activeNote = {
@@ -110,15 +108,15 @@ const handleNoteEdit = (event) => {
     getAndRenderNotes();
     renderActiveNote();
   });
-;
 
-const handleNoteDelete = (event) => {
+
+  const handleNoteDelete = (event) => {
   event.stopPropagation();
 }
 
-const note = event.target;
-const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
-console.log("Note Deleted.");
+  const note = event.target;
+  const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
+  console.log(`Note Deleted! Note ID: ${noteId}`);
 
   if (activeNote.id === noteId) {
     activeNote = {};
@@ -128,11 +126,11 @@ console.log("Note Deleted.");
     getAndRenderNotes();
     renderActiveNote();
   });
+};
 
 
 // Sets the activeNote and displays it
 const handleNoteView = (event) => {
-  event.preventDefault();
   activeNote = JSON.parse(event.target.parentElement.getAttribute('data-note'));
   renderActiveNote();
 };

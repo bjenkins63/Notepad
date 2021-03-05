@@ -1,12 +1,17 @@
 const express = require("express");
-const routes = require("./routes");
+const { noteRoutes, htmlRoutes } = require("./routes");
 const app = express();
 const PORT = process.env.PORT || 8080;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use("/api/notes", routes);
+app.use(express.static('./public'))
+
+//app.use("/", htmlRoutes);
+noteRoutes(app)
+htmlRoutes(app)
+//app.use("/api/notes", noteRoutes);
 
 
 app.listen(PORT, () => console.log(`server started on port: ${PORT}`));
