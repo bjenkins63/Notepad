@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const fs = require("fs");
+const generateUniqueId = require("generate-unique-id");
+
 
 const editNote = (updatedNotesArray) => {
   fs.writeFile("./db/db.json", JSON.stringify(updatedNotesArray), (err) => {
