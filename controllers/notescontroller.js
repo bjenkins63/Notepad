@@ -1,4 +1,4 @@
-const notes = require("../db/db");
+const notes = require("./db/db.json");
 
 class Note {
 

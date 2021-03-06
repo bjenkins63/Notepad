@@ -1,8 +1,8 @@
-const noteRoutes = require("./noteRoutes")
-const htmlRoutes = require("./htmlRoutes")
+const noteRoutes = require("./routes/api.Routes")
+const htmlRoutes = require("./routes/html.Routes")
 
 
 module.exports = {
-    noteRoutes: noteRoutes,
+    apiRoutes: apiRoutes,
     htmlRoutes: htmlRoutes,
 };
