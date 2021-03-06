@@ -69,7 +69,7 @@ module.exports = (app) => {
       if (selectedNote) {
         let updatedNote = {
           title: req.body.title,
-          text: req.body.text, 
+          text: req.body.body, 
           id: selectedNote.id,
         };
 

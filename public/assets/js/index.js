@@ -50,12 +50,20 @@ const deleteNote = (id) =>
     },
   });
 
+  const editNote = (id) =>
+  fetch(`/api/notes/${id}`, {
+    method: 'PUT',
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+
 const renderActiveNote = () => {
   hide(saveNoteBtn);
 
   if (activeNote.id) {
-    noteTitle.setAttribute('readonly', true);
-    noteText.setAttribute('readonly', true);
+    // noteTitle.setAttribute('readonly', true);
+    // noteText.setAttribute('readonly', true);
     noteTitle.value = activeNote.title;
     noteText.value = activeNote.text;
   } else {
@@ -75,12 +83,33 @@ const handleNoteSave = () => {
   });
 };
 
-// Delete the clicked note
-const handleNoteDelete = (e) => {
-  // prevents the click listener for the list from being called when the button inside of it is clicked
-  e.stopPropagation();
+const handleNoteEdit = (event) => {
+  event.stopPropagation();
+  handleNoteView();
 
-  const note = e.target;
+  const note = event.target;
+  const noteId = JSON.parse(note.parentElement.getAttributes("data-note")).id;
+
+  if (activeNote.id === noteId) {
+    activeNote = {
+    title: noteTitle.value.trim(),
+    text: noteText.value.trim(),
+  };
+}
+
+  editNote(noteId).then(() => {
+    saveNote(activeNote);
+    getAndRenderNotes();
+    renderActiveNote();
+  });
+};
+
+// Delete the clicked note
+const handleNoteDelete = (event) => {
+  // prevents the click listener for the list from being called when the button inside of it is clicked
+  event.stopPropagation();
+
+  const note = event.target;
   const noteId = JSON.parse(note.parentElement.getAttribute('data-note')).id;
 
   if (activeNote.id === noteId) {
@@ -94,14 +123,13 @@ const handleNoteDelete = (e) => {
 };
 
 // Sets the activeNote and displays it
-const handleNoteView = (e) => {
-  e.preventDefault();
-  activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
+const handleNoteView = (event) => {
+  activeNote = JSON.parse(event.target.parentElement.getAttribute('data-note'));
   renderActiveNote();
 };
 
 // Sets the activeNote to and empty object and allows the user to enter a new note
-const handleNewNoteView = (e) => {
+const handleNewNoteView = (event) => {
   activeNote = {};
   renderActiveNote();
 };
@@ -117,6 +145,7 @@ const handleRenderSaveBtn = () => {
 // Render the list of note titles
 const renderNoteList = async (notes) => {
   let jsonNotes = await notes.json();
+  
   if (window.location.pathname === '/notes') {
     noteList.forEach((el) => (el.innerHTML = ''));
   }
