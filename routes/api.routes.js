@@ -11,14 +11,14 @@ const editNote = (updatedNotesArray) => {
 
 module.exports = (app) => {
 
-  app.get('/api/notes', (req, res) => {
-    fs.readFile('./db/db.json'), 'utf-8', (err, data) => {
-        if (err) throw err;
+app.get('api/notes', (req, res) => {
+    fs.readFile('./db/db.json', 'utf-8', (err, data) => {
+        if (err) res.status(500).send(err);      
         res.json(JSON.parse(data));
-        };
+        });
     });
 
-app.post('/api/notes', (req, res) => {
+app.post('api/notes', (req, res) => {
     const newNote = req.body;
     let id = uuidv4();
     fs.readFile('./db/db.json', 'utf-8', (err, data) => {
