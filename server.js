@@ -11,8 +11,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 
-require('./routes/api.routes.js')(app);
-require('./routes/html.routes.js')(app);
+require('./routes/apiroutes.js')(app);
+require('./routes/htmlroutes.js')(app);
 
 app.listen(PORT, () => {
   console.log(`App listening on PORT: ${PORT}`);
