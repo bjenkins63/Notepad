@@ -1,21 +1,21 @@
 [
     {
-        "id": "01",
+        "id": 1,
         "title": "Test Title",
         "body": "Test text"
     },
     {
-        "id": "02",
+        "id": 2,
         "title": "This is title two",
         "body": "Test text number two"
     },
     {
-        "id": "03",
+        "id": 3,
         "title": "This is title three",
         "body": "Test text number three"
     },
     {
-        "id": "04",
+        "id": 4,
         "title": "This is title four",
         "body": "Test text number four"
     }

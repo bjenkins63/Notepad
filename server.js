@@ -1,14 +1,19 @@
-const express = require("express");
+const express = require('express');
+const path = require('path');
+const fs = require('fs');
+const {v4 : uuidv4} = require('uuid')
+
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(express.static('./public'))
 
-require("./routes/api.routes")(app);
-require("./routes/html.routes")(app);
+require('./routes/api.routes.js')(app);
+require('./routes/html.routes.js')(app);
 
-
-app.listen(PORT, () => console.log(`server started on port: ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`App listening on PORT: ${PORT}`);
+});
