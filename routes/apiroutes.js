@@ -8,14 +8,14 @@ const { v4: uuidv4 } = require('uuid');
 
 module.exports = (app) => {
 
-app.get('/api/notes', (req, res) => {
+router.get('/api/notes', (req, res) => {
     fs.readFile('./db/db.json', 'utf-8', (err, data) => {
         if (err) res.status(500).send(err);      
         res.json(JSON.parse(data));
         });
     });
 
-app.post('/api/notes', (req, res) => {
+router.post('/api/notes', (req, res) => {
     const newNote = req.body;
     let id = uuidv4();
     fs.readFile('./db/db.json', 'utf-8', (err, data) => {
@@ -29,7 +29,7 @@ app.post('/api/notes', (req, res) => {
         });
     });
 
-app.delete('/api/notes/:id', (req, res) => {
+router.delete('/api/notes/:id', (req, res) => {
     const deletId = req.params.id;
     fs.readFile('./db/db.json', 'utf-8', (err, data) => {
         if (err) throw err;
@@ -45,7 +45,7 @@ app.delete('/api/notes/:id', (req, res) => {
         });
     });
 
-app.put("/api/notes/:id", (req, res) => {
+router.put("/api/notes/:id", (req, res) => {
     const editId = req.params.id;
     fs.readFile('./db/db.json', 'utf-8', (err, data) => {
         if (err) throw err;
