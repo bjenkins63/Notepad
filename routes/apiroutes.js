@@ -1,5 +1,6 @@
-const express = require('express');
+const Router = require('express').router;
 const path = require('path');
+const notes = require('../db/db.json');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 
@@ -22,9 +23,8 @@ app.post('/api/notes', (req, res) => {
         const notesArr = JSON.parse(data);
         notesArr.push(newNote);
 
-        editNote(notesArr);
-        console.log('New note added!'
-        );
+        // editNote(notesArr);
+        console.log('New note added!');
         res.send(notesArr);
         });
     });
@@ -39,7 +39,7 @@ app.delete('/api/notes/:id', (req, res) => {
                 notesArr.splice(i, 1);
             }
         }
-        editNote(notesArr);
+        // editNote(notesArr);
         console.log('note deleted')
             res.send(activeNote);
         });
@@ -60,7 +60,7 @@ app.put("/api/notes/:id", (req, res) => {
             let targetIndex = notesArr.indexOf(selectedNote);
             notesArr.splice(targetIndex, 1, updatedNote);
             res.sendStatus(204);
-            editNote(notesArr);
+            // editNote(notesArr);
             res.json(notesArr);
         } else {
             res.sendStatus(404);
