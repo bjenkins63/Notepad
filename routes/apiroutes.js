@@ -1,39 +1,28 @@
-let db = require('../db/db.json');
-const { v4: uuidv4 } = require('uuid');
-const fs = require('fs');
+const router = require('express').Router();
+const store = require('../db/db.json');
 
-module.exports = (app) => {
 
-app.get('/api/notes', (req, res) => {
-    fs.readFile("./db/db.json", "utf-8", (err, data) => {
-        return res.json(JSON.parse(data))
+router.get('/notes', (req, res) => {
+    store
+    .getNotes()
+    .then((Notes) => {
+        return res.json(notes);
     })
+    .catch((err) => res.status(500).json(err));
 });
 
-app.post('/api/notes', (req, res) => {
-    let newNote = req.body
-    newNote.id = uuidv4();
-    db.push(newNote)
-    fs.writeFile('./db/db.json', JSON.stringify(db), (err) => {
-        if (err) throw err
-        res.json(db)
-    })
- });
-
- app.delete('/api/notes/:id', (req, res) => {
-    let idToBeDeleted = req.params.id
-    
-    for(i=0;i<db.length;i++){
-        if(idToBeDeleted == db[i].id){
-            db.splice(i, 1)
-        }
-    }
-
-    fs.writeFile('./db/db.json', JSON.stringify(db), (err) => {
-        if (err) throw err
- 
-        res.json(db)
-    })
+router.post('/notes', (req, res) => {
+    store
+    .addNote(req.body)
+    .then((note) => res.json(note))
+    .catch((err) => res.status(500).json(err));
 });
 
-};
+router.delete('/notes/:id', (req, res) => {
+    store
+    .removeNote(req.params.id)
+    .then(() => res.json({ ok: true }))
+    .catch((err) => res.status(500).json(err));
+});
+
+module.exports = router;
