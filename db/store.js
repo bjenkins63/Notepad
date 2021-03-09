@@ -1,9 +1,24 @@
-const util = require('util');
 const fs = require('fs');
 const uuidv4 = require('uuidv4');
+var store = require ('store');
 
-const readFileAsync = util.promisify(fs.readFile);
-const writeFileAsync = util.promisify(fs.writeFile);
+const readFileAsync = (path, data) => {
+return new Promise((resolve, reject) => {
+    fs.readFile(path, data, (err, data) => {
+        if (err) reject(err);
+        resolve(data);
+    })
+})
+}
+
+const writeFileAsync = (path, data) => {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(path, data, (err, data) => {
+            if (err) reject(err);
+            resolve(data);
+        })
+    })
+}
 
 class Store {
     read() {
@@ -37,15 +52,15 @@ addNote(note) {
     const newNote = { title, text, id: uuidv4() };
 
     return this.getNotes()
-    .then((notes) => [...notes, newNote])
-    .then((updatedNotes) => this.write(updatedNotes))
-    .then(() => newNote);
+        .then((notes) => [...notes, newNote])
+        .then((updatedNotes) => this.write(updatedNotes))
+        .then(() => newNote);
 }
 
 removeNote(id) {
     return this.getNotes()
-    .then((notes) => notes.filter((note) => note.id !== id))
-    .then((filteredNotes) => this.write(filteredNotes));
+        .then((notes) => notes.filter((note) => note.id !== id))
+        .then((filteredNotes) => this.write(filteredNotes));
 
     }
 }
