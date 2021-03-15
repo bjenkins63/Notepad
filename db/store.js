@@ -24,20 +24,14 @@ class Store {
       } catch (err) {
         parsedNotes = [];
       }
-
       return parsedNotes;
     });
   }
 
   addNote(note) {
     const { title, text } = note;
-
-    // if (!title || !text) {
-    //   throw new Error("Note 'title' and 'text' cannot be blank");
-    // }
-
     // Add a unique id to the note using uuid package
-    const newNote = { title, text, id: uuidv4() };
+    const newNote = { title, text, id: uuidv };
 
     // Get all notes, add the new note, write all the updated notes, return the newNote
     return this.getNotes()
