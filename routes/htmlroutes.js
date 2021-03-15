@@ -1,15 +1,6 @@
 const router = require("express").Router();
 const path = require('path');
 
-//index.html
-router.get("/index", (req, res) => {
-    try {
-        res.sendFile(path.join(__dirname, '../public/index.html'));
-    } catch (err) {
-        res.status(500).end();
-    }
-});
-
 // Notes page
 router.get("/notes", (req, res) => {
     try {
