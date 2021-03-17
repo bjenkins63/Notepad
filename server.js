@@ -5,7 +5,7 @@ const apiroutes = require('./routes/apiroutes');
 const htmlroutes = require('./routes/htmlroutes');
 
 const app = express();
-const port = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -13,6 +13,6 @@ app.use(express.static('public'));
 app.use("/api", apiroutes);
 app.use("/", htmlroutes);
 
-app.listen(port, () => {
+app.listen(PORT, () => {
     console.log(`App listening on PORT: ${PORT}`);
 });
